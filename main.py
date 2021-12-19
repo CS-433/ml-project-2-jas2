@@ -1,5 +1,4 @@
 import blob_detection as bd
-import digitize as di
 import os
 import subprocess
 
@@ -16,18 +15,20 @@ def clean_data():
     # go through all folders that were digitized RAW
     for raw_folder in os.listdir(data + di_raw):
         # go through all images inside these folders
-        src = data + sample + raw_folder.name
-        dst = data + clean + raw_folder.name
+        src = data + sample + '/' + raw_folder
+        dst = data + clean + '/' + raw_folder
+        print(src, dst)
         if not os.path.exists(dst):
             os.mkdir(dst)
 
         for image in os.listdir(src):
-            bd.clear_image(image.name, src, dst)
+            if "xml" not in image: # sample contains xml files
+                bd.clear_image(image, src, dst)
 
 def digitize(src, dst):
     for folder in os.listdir(src):
-    if not os.path.exists(src + '/' + folder.name):
-        os.mkdir(src + folder.name)
+        if not os.path.exists(src + '/' + folder.name):
+            os.mkdir(src + folder.name)
 
         # for each file
         for image in os.scandir(src + folder.name):
@@ -50,7 +51,7 @@ print("Digitizing sample...")
 
 ### clean data
 print("Cleaning sample...")
-#clean_data()
+clean_data()
 
 ### digitize cleaned data
 print("Digitizing cleaned sample...")

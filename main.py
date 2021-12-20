@@ -1,5 +1,6 @@
 import os
 import subprocess
+from multiprocessing import Pool
 import text_distances as td
 import blob_detection as bd
 
@@ -13,22 +14,24 @@ di_clean = data +"/digitized_clean"
 
 distances = data + "distances.txt"
 
+def loop(raw_folder):
+    # go through all images inside these folders
+    src = sample + '/' + raw_folder
+    dst = clean + '/' + raw_folder
+    print(src, dst)
+    if not os.path.exists(dst):
+        os.mkdir(dst)
+
+    for image in os.listdir(src):
+        if "xml" not in image: # sample contains xml files
+            # in case of unexpected interruption
+            if not os.path.exists(dst + '/' + image):
+                bd.clear_image(image, src, dst)
+
 def clean_data():
 
-    # go through all folders that were digitized RAW
-    for raw_folder in os.listdir(di_raw):
-        # go through all images inside these folders
-        src = sample + '/' + raw_folder
-        dst = clean + '/' + raw_folder
-        print(src, dst)
-        if not os.path.exists(dst):
-            os.mkdir(dst)
-
-        for image in os.listdir(src):
-            if "xml" not in image: # sample contains xml files
-                # in case of unexpected interruption
-                if not os.path.exists(dst + '/' + image):
-                    bd.clear_image(image, src, dst)
+    pool = Pool(3)
+    results = pool.map(loop, os.listdir(di_raw))
 
 def digitize(src, dst):
     for folder in os.listdir(src):

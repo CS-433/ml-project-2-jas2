@@ -41,7 +41,7 @@ def clear_image(name, src, dst):
                 if (i*i + j*j <= s2) and (y+j >= 0) and (x+i >= 0) and (y+j < height) and (x+i < width):
                     image[y+j,x+i] = (255,255,255)
     #save image
-    cv2.imwrite(dst + name, image)
+    cv2.imwrite(dst + '/' + name, image)
     return
 
 def detect_text(name, path="./data"):

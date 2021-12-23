@@ -44,3 +44,19 @@ def errors(file_name, truth_file):
     true_vals = s_truth - s
 
     return errors, true_vals
+
+
+def distances():
+    f = open(dists, "w")
+    for folder in os.listdir(di_raw):
+        for image in os.listdir(di_raw + '/' + folder):
+            t1 = di_raw + '/' + folder +'/'+ image
+            t2 = di_clean + '/' + folder +'/'+ image
+            print(t1)
+            print(t2)
+            if os.path.exists(t2):
+                jacc_vocab, jacc_vocab_pos = td.vocab_distance(t1, t2)
+                f.write(folder + '/' + image + ' ')
+                f.write(str(jacc_vocab) + ' ' + str(jacc_vocab_pos))
+                f.write("\n")
+    f.close()

@@ -16,32 +16,17 @@ dists = data + "distances.txt"
 
 
 def split():
+    """
+    Split cleaned samples in order to compute on Google Colab as well as in
+    remote
+    """
     size = len(os.listdir(clean))
     for f in os.listdir(clean)[:int(size/3)]:
         c = "mv " + clean + '/' + f + " " + data + \
-                '/' + "toGoogle" + '/' + f
+                '/' + "split" + '/' + f
         print(c)
         os.system(c)
 
-
-def loop(raw_folder):
-    # go through all images inside these folders
-    src = sample + '/' + raw_folder
-    dst = clean + '/' + raw_folder
-    print(src, dst)
-    if not os.path.exists(dst):
-        os.mkdir(dst)
-
-    for image in os.listdir(src):
-        if "xml" not in image: # sample contains xml files
-            # in case of unexpected interruption
-            if not os.path.exists(dst + '/' + image):
-                bd.clear_image(image, src, dst)
-
-def clean_data():
-
-    pool = Pool(3)
-    results = pool.map(loop, os.listdir(di_raw))
 
 def digitize(src, dst):
     for folder in os.listdir(src):
@@ -65,20 +50,6 @@ def digitize(src, dst):
                     print("\n" + command)
                     os.system(command)
 
-def distances():
-    f = open(dists, "w")
-    for folder in os.listdir(di_raw):
-        for image in os.listdir(di_raw + '/' + folder):
-            t1 = di_raw + '/' + folder +'/'+ image
-            t2 = di_clean + '/' + folder +'/'+ image
-            print(t1)
-            print(t2)
-            if os.path.exists(t2):
-                jacc_vocab, jacc_vocab_pos = td.vocab_distance(t1, t2)
-                f.write(folder + '/' + image + ' ')
-                f.write(str(jacc_vocab) + ' ' + str(jacc_vocab_pos))
-                f.write("\n")
-    f.close()
 
 
 
@@ -88,15 +59,16 @@ print("Digitizing sample...")
 
 ### clean data
 print("Cleaning digitized sample...")
-#clean_data()
+#bd.clean_data()
 
 ### digitize cleaned data
 print("Digitizing cleaned sample...")
-digitize("./data/toGoogle", di_clean)
+#digitize(clean, di_clean)
 
 ### compute distances
-#distances()
+#td.distances()
 
+### split data
 #split()
 
 

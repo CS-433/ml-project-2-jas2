@@ -1,5 +1,6 @@
 import cv2
 import numpy as np;
+from multiprocessing import Pool
 
 
 def clear_image(name, src, dst, merge_image):
@@ -90,3 +91,27 @@ def detect_text(name, path="./data"):
     #save image
     cv2.imwrite(path + "/detected-"+ name, image)
     return
+
+
+def loop(raw_folder):
+    """
+    To call only from clean_data().
+    Unfortunately can't pickle inner functions
+    """
+    # go through all images inside these folders
+    src = sample + '/' + raw_folder
+    dst = clean + '/' + raw_folder
+    print(src, dst)
+    if not os.path.exists(dst):
+        os.mkdir(dst)
+
+    for image in os.listdir(src):
+        if "xml" not in image: # sample contains xml files
+            # in case of unexpected interruption
+            if not os.path.exists(dst + '/' + image):
+                bd.clear_image(image, src, dst)
+
+def clean_data():
+    # parllelize !
+    pool = Pool(3)
+    results = pool.map(loop, os.listdir(di_raw))

@@ -1,3 +1,4 @@
+from collections import Counter
 import os
 
 def file_name_to_voc(file_name):
@@ -7,10 +8,10 @@ def file_name_to_voc(file_name):
     return txt.split()
 
 def jaccard(l1, l2):
-    s1 = set(l1)
-    s2 = set(l2)
-    intersection = s1 & s2
-    union = s1 | s2
+    s1 = Counter(l1)
+    s2 = Counter(l2)
+    intersection = list((s1 & s2).elements())
+    union = list((s1 | s2).elements())
     if(len(union) > 0):
         return (len(intersection) / len(union))
     else:
@@ -39,13 +40,13 @@ def errors(file_name, truth_file):
     voc = file_name_to_voc(file_name)
     voc_truth = file_name_to_voc(truth_file)
 
-    s = set(voc)
-    s_truth = set(voc_truth)
+    s = Counter(voc)
+    s_truth = Counter(voc_truth)
 
     errors = s - s_truth
     true_vals = s_truth - s
 
-    return errors, true_vals
+    return list(errors.elements()), list(true_vals.elements())
 
 def computeAllErrors(GT="ground_truth", di_clean="di_clean", di_raw="di_raw"):
     """
@@ -57,7 +58,6 @@ def computeAllErrors(GT="ground_truth", di_clean="di_clean", di_raw="di_raw"):
         return errors(path, GT)
 
 
-    dst = "distances"
     f = open("results.txt", "w")
 
     ce = []
@@ -65,9 +65,6 @@ def computeAllErrors(GT="ground_truth", di_clean="di_clean", di_raw="di_raw"):
     re = []
     rt = []
     for folder in os.listdir(GT):
-        dst_path = dst + '/' + folder
-        if not os.path.exists(dst_path):
-            os.mkdir(dst_path)
         for txt in os.listdir(GT + '/' + folder):
 
             path = GT + '/' + folder + '/' + txt
@@ -95,4 +92,21 @@ def computeAllErrors(GT="ground_truth", di_clean="di_clean", di_raw="di_raw"):
         f.write(x + ' ')
     f.write('\n')
 
+    f.close()
+
+def distances():
+    f = open("dists.txt", "w")
+    di_raw = "di_raw"
+    di_clean = "di_clean"
+    for folder in os.listdir(di_raw):
+        for image in os.listdir(di_raw + '/' + folder):
+            t1 = di_raw + '/' + folder +'/'+ image
+            t2 = di_clean + '/' + folder +'/'+ image
+            print(t1)
+            print(t2)
+            if os.path.exists(t2):
+                jacc_vocab, jacc_vocab_pos = vocab_distance(t1, t2)
+                f.write(folder + '/' + image + ' ')
+                f.write(str(jacc_vocab) + ' ' + str(jacc_vocab_pos))
+                f.write("\n")
     f.close()

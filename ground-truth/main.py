@@ -4,17 +4,6 @@ from multiprocessing import Pool
 import text_distances as td
 import blob_detection as bd
 
-data = "./data"
-
-sample = data + "/sample_1850_to_1859"
-clean = data +"/sample_clean"
-
-di_raw = data +"/digitized_raw"
-di_clean = data +"/digitized_clean"
-
-dists = data + "distances.txt"
-
-
 def split():
     size = len(os.listdir(clean))
     for f in os.listdir(clean)[:int(size/3)]:
@@ -26,8 +15,8 @@ def split():
 
 def loop(raw_folder):
     # go through all images inside these folders
-    src = sample + '/' + raw_folder
-    dst = clean + '/' + raw_folder
+    src = "../"+ sample + '/' + raw_folder
+    dst = "di_clean" + '/' + raw_folder
     print(src, dst)
     if not os.path.exists(dst):
         os.mkdir(dst)
@@ -41,7 +30,7 @@ def loop(raw_folder):
 def clean_data():
 
     pool = Pool(3)
-    results = pool.map(loop, os.listdir(di_raw))
+    results = pool.map(loop, os.listdir("di_raw"))
 
 def digitize(src, dst):
     for folder in os.listdir(src):
@@ -66,6 +55,7 @@ def digitize(src, dst):
                     os.system(command)
 
 def distances():
+    dists = data + "distances.txt"
     f = open(dists, "w")
     for folder in os.listdir(di_raw):
         for image in os.listdir(di_raw + '/' + folder):
@@ -92,12 +82,12 @@ print("Cleaning digitized sample...")
 
 ### digitize cleaned data
 print("Digitizing cleaned sample...")
-digitize("./data/toGoogle", di_clean)
+#digitize("clean", "di_clean")
 
 ### compute distances
 #distances()
 
-#split()
-
+### compute errors
+td.computeAllErrors()
 
 print("Done !")

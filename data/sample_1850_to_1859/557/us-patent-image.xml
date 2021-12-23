@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<!DOCTYPE us-patent-image PUBLIC "-//USPTO//DTD us-patent-image v1.0 2002-06-04//EN" "..\..\..\us-patent-image-010.dtd">
+<us-patent-image
+ file="D00001"
+ date-produced="20120910"
+ lang="EN"
+ status="Conv NN"
+>
+
+ <patent-metadata>
+  <full-document-number>00000557</full-document-number>
+
+  <document-id lang="EN">
+   <country>US</country>
+   <doc-number>00000557</doc-number>
+   <kind>A1</kind>
+   <date>18380109</date>
+  </document-id>
+
+  <page-count>3</page-count>
+  <scan-date>
+   <date></date>
+  </scan-date>
+  <record-status value="rescan" />
+
+  <bib-pages>
+   <begin>2</begin>
+   <end>2</end>
+  </bib-pages>
+
+  <abstract-pages>
+   <begin>2</begin>
+   <end>2</end>
+  </abstract-pages>
+
+  <drawings-pages>
+   <begin>1</begin>
+   <end>1</end>
+  </drawings-pages>
+
+  <description-pages>
+   <begin>2</begin>
+   <end>3</end>
+  </description-pages>
+
+  <claims-pages>
+   <begin>3</begin>
+   <end>3</end>
+  </claims-pages>
+
+ </patent-metadata>
+
+</us-patent-image>

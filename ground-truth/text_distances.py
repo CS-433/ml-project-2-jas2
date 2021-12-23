@@ -48,6 +48,11 @@ def errors(file_name, truth_file):
     return errors, true_vals
 
 def computeAllErrors(GT="ground_truth", di_clean="di_clean", di_raw="di_raw"):
+    """
+    Get values to compare distances to a ground truth between raw and cleaned
+    data
+    """
+
     def errorsAndWrite(path, GT):
         return errors(path, GT)
 
@@ -91,5 +96,3 @@ def computeAllErrors(GT="ground_truth", di_clean="di_clean", di_raw="di_raw"):
     f.write('\n')
 
     f.close()
-
-

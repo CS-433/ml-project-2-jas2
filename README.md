@@ -15,8 +15,11 @@ The US patents are in TIF files and an XML.
 - Digitized clean data in *data/digitized_clean*
 - Splited data was stored in *data/split* ; the split() functions was used to split cleaned data thus paths are hardcoded accordingly.
 
-One of our last experiment used a ground truth. In folder *ground-truth/* you
-find a similar folder structure than in *data/*.
+One of our last experiment used a ground truth. In folder *ground-truth/* we have :
+- *di_raw* for digitized data
+- *di_clean* for digitized clean data
+- *ground_truth* for manually digitized images
+In the same folder we have a main.py outputing a results.txt file.
 
 __Functions assume this architeture.__
 
